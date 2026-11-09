@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fitnes — система обліку для фітнес-центру</title>
+<meta name="description" content="Fitnes — українська система обліку для фітнес-центру: клієнти та абонементи, контроль входу за ключами, продажі з фіскалізацією через Вчасно.Каса, склад, розклад і звіти." />
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0b0813;
+    --bg-2:#0d0a1a;
+    --panel:#15102a;
+    --panel-2:#1b1436;
+    --line:rgba(168,85,247,.14);
+    --line-strong:rgba(168,85,247,.28);
+    --violet:#a855f7;
+    --violet-2:#c084fc;
+    --violet-3:#7c3aed;
+    --lilac:#e9d5ff;
+    --txt:#ece7fb;
+    --muted:#a394c7;
+    --muted-2:#8073a3;
+    --ok:#34d399;
+    --radius:20px;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:'Manrope',system-ui,'Segoe UI',Roboto,sans-serif;
+    color:var(--txt);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;font-weight:600;letter-spacing:-.02em;line-height:1.08;margin:0}
+  p{margin:0}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .grad-txt{
+    background:linear-gradient(100deg,#c084fc 0%,#e9d5ff 45%,#a855f7 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  /* ambient background glows */
+  .glow{position:fixed;border-radius:50%;filter:blur(90px);z-index:0;pointer-events:none;opacity:.5}
+  .glow.a{width:620px;height:620px;background:#7c3aed;top:-220px;left:-160px}
+  .glow.b{width:520px;height:520px;background:#c026d3;top:300px;right:-200px;opacity:.28}
+  .glow.c{width:600px;height:600px;background:#5b21b6;bottom:-200px;left:30%;opacity:.22}
+
+  /* ---------- NAV ---------- */
+  header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+    background:linear-gradient(180deg,rgba(11,8,19,.86),rgba(11,8,19,.5));
+    border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:12px;font-family:'Unbounded',sans-serif;font-weight:600;font-size:19px}
+  .brand img{width:38px;height:38px;border-radius:11px;box-shadow:0 6px 22px rgba(124,58,237,.45)}
+  .brand span.sub{display:block;font-family:'Manrope';font-weight:500;font-size:10px;letter-spacing:3px;color:var(--muted-2);margin-top:1px}
+  nav.links{display:flex;gap:30px;align-items:center}
+  nav.links a{color:var(--muted);font-size:15px;font-weight:500;transition:color .2s}
+  nav.links a:hover{color:var(--lilac)}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15px;
+    padding:12px 22px;border-radius:12px;cursor:pointer;transition:transform .15s ease,box-shadow .25s ease,background .2s;border:0}
+  .btn-primary{background:linear-gradient(120deg,#8b3bf0,#c084fc);color:#fff;box-shadow:0 10px 30px rgba(139,59,240,.4)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(139,59,240,.55)}
+  .btn-ghost{background:rgba(168,85,247,.08);color:var(--lilac);border:1px solid var(--line-strong)}
+  .btn-ghost:hover{background:rgba(168,85,247,.16)}
+  .nav .btn{padding:10px 20px}
+  .burger{display:none}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;z-index:1;padding:86px 0 70px}
+  .hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:56px;align-items:center}
+  .badge{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--violet-2);
+    background:rgba(168,85,247,.1);border:1px solid var(--line-strong);padding:7px 14px;border-radius:999px;margin-bottom:26px}
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok)}
+  .hero h1{font-size:clamp(34px,4.6vw,56px)}
+  .hero .lead{color:var(--muted);font-size:19px;max-width:540px;margin:24px 0 34px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .hero-note{display:flex;gap:22px;margin-top:30px;flex-wrap:wrap}
+  .hero-note div{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--muted)}
+  .hero-note svg{color:var(--violet-2);flex:none}
+
+  /* mockup window */
+  .mock{position:relative;border-radius:var(--radius);overflow:hidden;
+    background:linear-gradient(160deg,#17112e,#100c22);
+    border:1px solid var(--line-strong);
+    box-shadow:0 40px 90px -30px rgba(80,20,160,.7),0 0 0 1px rgba(255,255,255,.02) inset}
+  .mock::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(500px 180px at 80% -10%,rgba(192,132,252,.22),transparent 70%);pointer-events:none}
+  .mock-bar{display:flex;align-items:center;gap:8px;padding:13px 16px;border-bottom:1px solid var(--line)}
+  .mock-bar i{width:11px;height:11px;border-radius:50%;background:#2c2250;display:block}
+  .mock-bar i:nth-child(1){background:#f0607a}.mock-bar i:nth-child(2){background:#f3b64b}.mock-bar i:nth-child(3){background:#4bd07a}
+  .mock-bar .ttl{margin-left:12px;font-size:12.5px;color:var(--muted-2);font-weight:600;letter-spacing:.3px}
+  .mock-body{padding:18px}
+  .mock-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .mock-head h4{font-family:'Unbounded';font-size:16px;font-weight:600}
+  .pill{font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px}
+  .pill.g{color:#6ee7b7;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.25)}
+  .mstat{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:16px}
+  .mstat div{background:rgba(168,85,247,.06);border:1px solid var(--line);border-radius:13px;padding:12px 13px}
+  .mstat b{font-family:'Unbounded';font-size:21px;display:block;line-height:1.1}
+  .mstat small{color:var(--muted-2);font-size:11px;font-weight:600}
+  .mrow{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;
+    background:rgba(255,255,255,.02);border:1px solid var(--line);margin-bottom:9px}
+  .av{width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;font-weight:800;font-size:13px;color:#fff;
+    background:linear-gradient(135deg,#8b3bf0,#c084fc)}
+  .av.o{background:linear-gradient(135deg,#f3b64b,#ef8a4b)}
+  .av.p{background:linear-gradient(135deg,#34d399,#10b981)}
+  .mrow .nm{font-weight:700;font-size:13.5px}
+  .mrow .mt{color:var(--muted-2);font-size:11.5px}
+  .mrow .key{margin-left:auto;font-weight:800;font-size:12.5px;color:var(--lilac);
+    background:rgba(168,85,247,.12);border:1px solid var(--line-strong);padding:5px 10px;border-radius:9px;font-variant-numeric:tabular-nums}
+  .mrow .time{color:var(--muted);font-size:11.5px;min-width:46px;text-align:right}
+
+  /* ---------- logos / trust strip ---------- */
+  .strip{position:relative;z-index:1;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    background:rgba(255,255,255,.015)}
+  .strip-in{display:flex;flex-wrap:wrap;gap:14px 30px;justify-content:center;align-items:center;padding:20px 24px}
+  .strip-in span{color:var(--muted-2);font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:9px}
+  .strip-in span svg{color:var(--violet-2)}
+
+  /* ---------- section shell ---------- */
+  section{position:relative;z-index:1;padding:84px 0}
+  .shead{text-align:center;max-width:680px;margin:0 auto 52px}
+  .eyebrow{color:var(--violet-2);font-weight:700;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px}
+  .shead h2{font-size:clamp(28px,3.4vw,40px)}
+  .shead p{color:var(--muted);font-size:17px;margin-top:16px}
+
+  /* ---------- feature grid ---------- */
+  .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{background:linear-gradient(160deg,var(--panel),#100b22);border:1px solid var(--line);
+    border-radius:var(--radius);padding:26px 24px;transition:transform .2s ease,border-color .25s,box-shadow .3s}
+  .card:hover{transform:translateY(-5px);border-color:var(--line-strong);box-shadow:0 24px 50px -24px rgba(124,58,237,.6)}
+  .ic{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;margin-bottom:18px;
+    background:linear-gradient(135deg,rgba(139,59,240,.22),rgba(192,132,252,.12));border:1px solid var(--line-strong)}
+  .ic svg{color:var(--violet-2)}
+  .card h3{font-size:18px;margin-bottom:10px;min-height:2.16em;display:flex;align-items:flex-start}
+  .card p{color:var(--muted);font-size:14.5px}
+
+  /* ---------- steps / how it works ---------- */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
+  .step{position:relative;background:linear-gradient(160deg,var(--panel),#100b22);border:1px solid var(--line);
+    border-radius:var(--radius);padding:26px 22px}
+  .step .num{font-family:'Unbounded';font-size:14px;font-weight:700;color:#0b0813;
+    width:34px;height:34px;border-radius:10px;display:grid;place-items:center;margin-bottom:16px;
+    background:linear-gradient(135deg,#c084fc,#8b3bf0)}
+  .step h3{font-size:16px;margin-bottom:8px;min-height:2.16em;display:flex;align-items:flex-start}
+  .step p{color:var(--muted);font-size:14px}
+  .step:not(:last-child)::after{content:"";position:absolute;top:42px;right:-13px;width:26px;height:1px;
+    background:linear-gradient(90deg,var(--line-strong),transparent);z-index:2}
+
+  /* ---------- split highlight ---------- */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .split.rev .vis{order:2}
+  .split h2{font-size:clamp(26px,3vw,36px)}
+  .split p.sub{color:var(--muted);font-size:17px;margin:18px 0 26px}
+  .checklist{display:flex;flex-direction:column;gap:14px}
+  .checklist li{list-style:none;display:flex;gap:13px;align-items:flex-start}
+  .checklist .ck{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;margin-top:1px;
+    background:rgba(52,211,153,.13);border:1px solid rgba(52,211,153,.3);color:var(--ok)}
+  .checklist b{font-weight:700}
+  .checklist .t{color:var(--muted);font-size:14.5px}
+
+  /* receipt visual */
+  .vis{position:relative}
+  .receipt{background:linear-gradient(160deg,#17112e,#110c22);border:1px solid var(--line-strong);border-radius:var(--radius);
+    padding:24px;box-shadow:0 40px 80px -34px rgba(80,20,160,.7)}
+  .receipt .rh{display:flex;justify-content:space-between;align-items:center;padding-bottom:16px;border-bottom:1px dashed var(--line-strong);margin-bottom:16px}
+  .receipt .rh .t{font-family:'Unbounded';font-size:15px}
+  .rline{display:flex;justify-content:space-between;font-size:14px;padding:7px 0;color:var(--muted)}
+  .rline b{color:var(--txt);font-weight:600}
+  .rtot{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line-strong)}
+  .rtot .s{color:var(--muted-2);font-size:13px}
+  .rtot .v{font-family:'Unbounded';font-size:26px}
+  .rbadges{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap}
+  .rbadges span{font-size:11.5px;font-weight:700;padding:6px 11px;border-radius:9px;color:var(--violet-2);
+    background:rgba(168,85,247,.1);border:1px solid var(--line-strong)}
+
+  /* ---------- audience ---------- */
+  .aud{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .aud .card{text-align:left}
+  .aud h3{font-size:17px}
+
+  /* ---------- big CTA ---------- */
+  .cta{position:relative;z-index:1;padding:40px 0 100px}
+  .cta-box{position:relative;overflow:hidden;border-radius:28px;padding:64px 48px;text-align:center;
+    background:linear-gradient(135deg,#2a1150,#160c2e);border:1px solid var(--line-strong)}
+  .cta-box::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(600px 240px at 50% -20%,rgba(192,132,252,.4),transparent 70%);pointer-events:none}
+  .cta-box h2{font-size:clamp(28px,3.6vw,42px);position:relative}
+  .cta-box p{color:#cbb8ef;font-size:18px;margin:18px auto 32px;max-width:560px;position:relative}
+  .cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+  .cta-note{position:relative;margin-top:20px;color:var(--muted);font-size:13.5px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+  .cta-note span{display:inline-flex;align-items:center;gap:7px}
+  .cta-note svg{color:var(--violet-2)}
+  .start{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:760px;margin:0 auto 34px;text-align:left}
+  .start .s{background:rgba(255,255,255,.04);border:1px solid var(--line-strong);border-radius:16px;padding:20px 18px}
+  .start .s .n{font-family:'Unbounded';font-size:13px;color:#0b0813;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;margin-bottom:13px;background:linear-gradient(135deg,#c084fc,#8b3bf0)}
+  .start .s h4{font-family:'Unbounded';font-size:15px;font-weight:600;margin:0 0 6px}
+  .start .s p{color:#cbb8ef;font-size:13.5px;margin:0}
+  @media(max-width:620px){.start{grid-template-columns:1fr}}
+
+  /* ---------- footer ---------- */
+  footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .foot .muted{color:var(--muted-2);font-size:13.5px}
+  .foot nav{display:flex;gap:22px;flex-wrap:wrap}
+  .foot nav a{color:var(--muted);font-size:14px}
+  .foot nav a:hover{color:var(--lilac)}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:960px){
+    .hero-grid{grid-template-columns:1fr;gap:40px}
+    .fgrid{grid-template-columns:repeat(2,1fr)}
+    .steps{grid-template-columns:repeat(2,1fr)}
+    .step::after{display:none}
+    .split{grid-template-columns:1fr;gap:34px}
+    .split.rev .vis{order:0}
+    .aud{grid-template-columns:1fr}
+    nav.links{display:none}
+  }
+  @media(max-width:560px){
+    .fgrid{grid-template-columns:1fr}
+    .steps{grid-template-columns:1fr}
+    .mstat{grid-template-columns:repeat(3,1fr)}
+    .hero{padding:54px 0 48px}
+    section{padding:62px 0}
+    .cta-box{padding:46px 24px}
+    .nav .btn{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){.reveal{transition:none;opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<div class="glow a"></div>
+<div class="glow b"></div>
+<div class="glow c"></div>
+
+<!-- ===== NAV ===== -->
+<header class="nav">
+  <div class="wrap nav-in">
+    <a href="#" class="brand">
+      <img src="assets/logo.svg" alt="Fitnes" />
+      <span>Fitnes<span class="sub">СИСТЕМА ОБЛІКУ</span></span>
+    </a>
+    <nav class="links">
+      <a href="#features">Можливості</a>
+      <a href="#how">Як працює</a>
+      <a href="#fiscal">Фіскалізація</a>
+      <a href="#audience">Для кого</a>
+    </nav>
+    <a href="#download" class="btn btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
+      Завантажити</a>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="reveal">
+      <span class="badge"><span class="dot"></span>10 днів безкоштовно · без картки</span>
+      <h1>Уся робота фітнес-центру — <span class="grad-txt">в одній системі</span></h1>
+      <p class="lead">Клієнти та абонементи, контроль входу за ключами, продажі з фіскальним чеком через Вчасно.Каса, склад, розклад і звіти. Завантажте й користуйтеся — 10 днів повна версія безкоштовно.</p>
+      <div class="hero-cta">
+        <a href="#download" class="btn btn-primary">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
+          Завантажити безкоштовно
+        </a>
+        <a href="#features" class="btn btn-ghost">Переглянути можливості</a>
+      </div>
+      <div class="hero-note">
+        <div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Повна версія на 10 днів</div>
+        <div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Без реєстрації та дзвінків</div>
+        <div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Встановлення за 10 хвилин</div>
+      </div>
+    </div>
+
+    <!-- live mockup: Хто в залі зараз -->
+    <div class="reveal mock" aria-hidden="true">
+      <div class="mock-bar"><i></i><i></i><i></i><span class="ttl">Хто в залі зараз · ресепшн</span></div>
+      <div class="mock-body">
+        <div class="mock-head">
+          <h4>Хто в залі зараз</h4>
+          <span class="pill g">● 18 вільних ключів</span>
+        </div>
+        <div class="mstat">
+          <div><b>14</b><small>у залі</small></div>
+          <div><b>7</b><small>продажів</small></div>
+          <div><b>₴9 240</b><small>каса за день</small></div>
+        </div>
+        <div class="mrow">
+          <span class="av">ОК</span>
+          <div><div class="nm">Олена Коваль</div><div class="mt">Річний абонемент</div></div>
+          <span class="key">№ 112</span><span class="time">09:42</span>
+        </div>
+        <div class="mrow">
+          <span class="av o">ДМ</span>
+          <div><div class="nm">Дмитро Мороз</div><div class="mt">Місячний · 8 відв.</div></div>
+          <span class="key">№ 045</span><span class="time">10:05</span>
+        </div>
+        <div class="mrow">
+          <span class="av p">ІШ</span>
+          <div><div class="nm">Ірина Шевчук</div><div class="mt">Разове відвідування</div></div>
+          <span class="key">№ 207</span><span class="time">10:18</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST STRIP ===== -->
+<div class="strip">
+  <div class="wrap strip-in">
+    <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>Фіскальні чеки · Вчасно.Каса</span>
+    <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Оплата карткою через термінал</span>
+    <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M5 5l14 14M19 5 5 19"/></svg>Округлення готівки за НБУ</span>
+    <span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>Експорт у Excel / CSV</span>
+  </div>
+</div>
+
+<!-- ===== FEATURES ===== -->
+<section id="features">
+  <div class="wrap">
+    <div class="shead reveal">
+      <div class="eyebrow">Можливості</div>
+      <h2>Усе, що потрібно ресепшену й адміністратору</h2>
+      <p>Один застосунок замість зошита, калькулятора й окремих програм. Швидко на касі — зрозуміло в звітах.</p>
+    </div>
+    <div class="fgrid">
+
+      <div class="card reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Клієнти та абонементи</h3>
+        <p>Картка клієнта, пошук за номером телефону, історія покупок і відвідувань. Абонементи з продовженням, заморозкою та статусами.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 20 3M17 5l2 2M15 7l2 2"/></svg></div>
+        <h3>Контроль входу за ключами</h3>
+        <p>Видача ключа від шафки з автоперевіркою абонемента й лімітів. Екран «Хто в залі зараз», лог усіх входів і виходів.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 14h4"/></svg></div>
+        <h3>Продажі та фіскалізація</h3>
+        <p>Готівка, картка або змішана оплата. Кнопки «Провести» та «Провести фіскально» — чек через Вчасно.Каса, округлення готівки за НБУ.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="m3.3 7 8.7 5 8.7-5M12 22V12"/></svg></div>
+        <h3>Товари та склад</h3>
+        <p>Дерево категорій, кілька штрихкодів на товар, генерація EAN-13, поступлення й облік залишків. Продаж за сканером на ресепшені.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></div>
+        <h3>Розклад занять</h3>
+        <p>Сітка групових занять із залами, лімітом місць і повторами. Запис клієнта з перевіркою абонемента та відмітка присутності.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="7"/><rect x="12" y="7" width="3" height="11"/><rect x="17" y="13" width="3" height="5"/></svg></div>
+        <h3>Звіти та аналітика</h3>
+        <p>Виручка за період, нал/картка, за касирами й тарифами. Відвідуваність, активні та прострочені абонементи, нові й продовження.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section id="how">
+  <div class="wrap">
+    <div class="shead reveal">
+      <div class="eyebrow">Як працює</div>
+      <h2>Клієнт на ресепшені — за 4 кроки</h2>
+      <p>Типовий потік кассира: від пошуку клієнта до видачі ключа й чека.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="num">1</div><h3>Знайти клієнта</h3><p>Швидкий пошук за номером телефону або створення нової картки (телефон + ім’я).</p></div>
+      <div class="step reveal"><div class="num">2</div><h3>Перевірити абонемент</h3><p>Система показує статус, залишок відвідувань і ліміти. Немає активного — оформлюємо продаж.</p></div>
+      <div class="step reveal"><div class="num">3</div><h3>Провести оплату</h3><p>Готівка, картка чи змішана. За потреби — фіскальний чек через Вчасно.Каса й термінал.</p></div>
+      <div class="step reveal"><div class="num">4</div><h3>Видати ключ</h3><p>Вільний ключ закріплюється за клієнтом, фіксується час. Клієнт — на екрані «Хто в залі».</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FISCAL SPLIT ===== -->
+<section id="fiscal">
+  <div class="wrap split">
+    <div class="vis reveal">
+      <div class="receipt">
+        <div class="rh"><span class="t">Фіскальний чек</span><span class="pill g">ПРРО · проведено</span></div>
+        <div class="rline"><span>Річний абонемент</span><b>₴7 200,00</b></div>
+        <div class="rline"><span>Вода 0,5 л × 2</span><b>₴60,00</b></div>
+        <div class="rline"><span>Протеїн-батончик</span><b>₴85,00</b></div>
+        <div class="rline" style="color:var(--muted-2)"><span>Округлення (НБУ)</span><b style="color:var(--muted)">−₴0,05</b></div>
+        <div class="rtot"><span class="s">До сплати готівкою</span><span class="v grad-txt">₴7 344,95</span></div>
+        <div class="rbadges"><span>Вчасно.Каса</span><span>X / Z-звіт</span><span>Чек повернення</span></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="eyebrow">Фіскалізація та каса</div>
+      <h2>Чеки за законом — без зайвих дій</h2>
+      <p class="sub">Фіскалізація інтегрована в продаж. Касир лише обирає спосіб оплати, а система дбає про чек, округлення й звірку з ПРРО.</p>
+      <ul class="checklist">
+        <li><span class="ck"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Фіскальні чеки через Вчасно.Каса.</b> <span class="t">Продаж і повернення, відкриття/закриття зміни ПРРО з X/Z-звітом.</span></div></li>
+        <li><span class="ck"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Округлення готівки за НБУ.</b> <span class="t">Безготівкова частина не округлюється — усе за вимогами законодавства.</span></div></li>
+        <li><span class="ck"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Оплата карткою через термінал.</b> <span class="t">Банківський термінал підключений до девайс-менеджера Вчасно.Каса.</span></div></li>
+        <li><span class="ck"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Зведення за день і звірка.</b> <span class="t">Окремо всі продажі та фіскальна частина — для звірки з Z-звітом.</span></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTROL SPLIT ===== -->
+<section>
+  <div class="wrap split rev">
+    <div class="vis reveal">
+      <div class="mock" style="box-shadow:0 40px 80px -34px rgba(80,20,160,.6)">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="ttl">Видача ключа · контроль входу</span></div>
+        <div class="mock-body">
+          <div class="mrow" style="margin-bottom:14px">
+            <span class="av">ВП</span>
+            <div><div class="nm">Віктор Поліщук</div><div class="mt">0•• ••• •• 42 · знайдено за номером</div></div>
+            <span class="pill g">Активний</span>
+          </div>
+          <div class="mstat" style="margin-bottom:0">
+            <div><b>284</b><small>днів до кінця</small></div>
+            <div><b>∞</b><small>відвідувань</small></div>
+            <div><b>№ 073</b><small>вільний ключ</small></div>
+          </div>
+          <div style="margin-top:16px;display:flex;gap:11px">
+            <span class="btn btn-primary" style="flex:1;justify-content:center;padding:12px">Видати ключ</span>
+            <span class="btn btn-ghost" style="padding:12px 16px">Історія</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="eyebrow">Контроль входу</div>
+      <h2>Жодного проходу без ключа</h2>
+      <p class="sub">Вхід у зал — тільки через видачу ключа від шафки. Система не дасть видати ключ без активного абонемента чи незареєстрованому клієнту.</p>
+      <ul class="checklist">
+        <li><span class="ck"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Автоперевірка на видачі.</b> <span class="t">Активність абонемента, залишок відвідувань і ліміти за часом.</span></div></li>
+        <li><span class="ck"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Екран «Хто в залі зараз».</b> <span class="t">Хто, з якого часу й з яким ключем — головний робочий екран ресепшену.</span></div></li>
+        <li><span class="ck"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Повний лог входів/виходів.</b> <span class="t">Клієнт, ключ, час видачі й повернення, хто видав.</span></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AUDIENCE ===== -->
+<section id="audience">
+  <div class="wrap">
+    <div class="shead reveal">
+      <div class="eyebrow">Для кого</div>
+      <h2>Зроблено під одиночний фітнес-центр</h2>
+      <p>Без зайвого — лише робочі місця ресепшену й адміністратора. Без хмарної залежності та абонплати за SaaS.</p>
+    </div>
+    <div class="aud">
+      <div class="card reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+        <h3>Ресепшн</h3>
+        <p>Продажі, видача й повернення ключів, робота з клієнтами, запис на заняття — швидко й без помилок.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v1H7a2 2 0 0 0-2 2v4a7 7 0 0 0 14 0V8a2 2 0 0 0-2-2h-2V5a3 3 0 0 0-3-3z"/></svg></div>
+        <h3>Адміністратор</h3>
+        <p>Усе з ресепшену плюс каталоги, співробітники, повернення, склад, звіти й налаштування та ролі доступу.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M4 9h2M4 15h2M18 9h2M18 15h2M9 4v2M15 4v2M9 18v2M15 18v2"/></svg></div>
+        <h3>Локальна установка</h3>
+        <p>Один сервер тримає базу й застосунок, решта місць — браузер у локальній мережі. Дані залишаються у вас.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DOWNLOAD / CTA ===== -->
+<section class="cta" id="download">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <h2>Завантажте і спробуйте 10 днів безкоштовно</h2>
+      <p>Без реєстрації, форм і дзвінків. Встановіть — повна версія активується автоматично на 10 днів.</p>
+      <div class="start">
+        <div class="s"><div class="n">1</div><h4>Завантажте</h4><p>Інсталятор для Windows. Встановлення за кілька хвилин.</p></div>
+        <div class="s"><div class="n">2</div><h4>10 днів безкоштовно</h4><p>Повна версія активується сама — усі можливості без обмежень.</p></div>
+        <div class="s"><div class="n">3</div><h4>Активуйте ключ</h4><p>Сподобалось — введіть ліцензійний ключ і працюйте далі.</p></div>
+      </div>
+      <div class="cta-actions">
+        <a href="https://github.com/LionnoiL/fitnes-docs/releases/latest/download/fitnes-setup.exe" class="btn btn-primary">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
+          Завантажити для Windows
+        </a>
+        <a href="https://lionnoil.github.io/fitnes-docs/" target="_blank" rel="noopener" class="btn btn-ghost">Інструкція зі встановлення</a>
+      </div>
+      <div class="cta-note">
+        <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Без картки</span>
+        <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Дані залишаються у вас</span>
+        <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Windows 10 / 11</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap foot">
+    <a href="#" class="brand" style="font-size:17px"><img src="assets/logo.svg" alt="Fitnes" style="width:32px;height:32px" /><span>Fitnes<span class="sub">СИСТЕМА ОБЛІКУ</span></span></a>
+    <nav>
+      <a href="#features">Можливості</a>
+      <a href="#how">Як працює</a>
+      <a href="#fiscal">Фіскалізація</a>
+      <a href="#audience">Для кого</a>
+      <a href="#download">Завантажити</a>
+      <a href="https://lionnoil.github.io/fitnes-docs/" target="_blank" rel="noopener">Документація ↗</a>
+    </nav>
+    <span class="muted">© 2026 Fitnes · Система обліку для фітнес-центру</span>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.14, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
+    el.style.transitionDelay = (i%3)*70 + 'ms';
+    io.observe(el);
+  });
+</script>
+</body>
+</html>

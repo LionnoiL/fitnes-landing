@@ -1,0 +1,84 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e1333"/>
+      <stop offset="100%" stop-color="#0d0a1a"/>
+    </linearGradient>
+    <linearGradient id="plateGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="barGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="50%" stop-color="#e9d5ff"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="collarGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e9d5ff"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect width="512" height="512" rx="90" fill="url(#bgGrad)"/>
+
+  <!-- Subtle ambient glow behind dumbbell -->
+  <ellipse cx="256" cy="256" rx="220" ry="70" fill="#aa3bff" opacity="0.07"/>
+
+  <!-- LEFT WEIGHT PLATE -->
+  <!-- Outer plate -->
+  <rect x="62" y="184" width="92" height="144" rx="18" fill="url(#plateGrad)"/>
+  <!-- Inner recess -->
+  <rect x="80" y="198" width="56" height="116" rx="11" fill="#5b21b6" opacity="0.55"/>
+  <!-- Center hole -->
+  <circle cx="108" cy="256" r="17" fill="#180f2e"/>
+  <!-- Left highlight strip -->
+  <rect x="66" y="188" width="13" height="136" rx="5" fill="white" opacity="0.18"/>
+  <!-- Bottom shadow strip -->
+  <rect x="66" y="308" width="88" height="14" rx="0 0 18 18" fill="#5b21b6" opacity="0.4"/>
+
+  <!-- RIGHT WEIGHT PLATE -->
+  <!-- Outer plate -->
+  <rect x="358" y="184" width="92" height="144" rx="18" fill="url(#plateGrad)"/>
+  <!-- Inner recess -->
+  <rect x="376" y="198" width="56" height="116" rx="11" fill="#5b21b6" opacity="0.55"/>
+  <!-- Center hole -->
+  <circle cx="404" cy="256" r="17" fill="#180f2e"/>
+  <!-- Right side shadow strip -->
+  <rect x="437" y="188" width="13" height="136" rx="5" fill="#5b21b6" opacity="0.35"/>
+  <!-- Bottom shadow strip -->
+  <rect x="358" y="308" width="92" height="14" rx="0 0 18 18" fill="#5b21b6" opacity="0.4"/>
+
+  <!-- LEFT COLLAR -->
+  <rect x="148" y="226" width="22" height="60" rx="6" fill="url(#collarGrad)"/>
+  <!-- collar highlight -->
+  <rect x="150" y="228" width="6" height="56" rx="3" fill="white" opacity="0.3"/>
+
+  <!-- RIGHT COLLAR -->
+  <rect x="342" y="226" width="22" height="60" rx="6" fill="url(#collarGrad)"/>
+  <!-- collar shadow -->
+  <rect x="356" y="228" width="6" height="56" rx="3" fill="#5b21b6" opacity="0.4"/>
+
+  <!-- BAR -->
+  <rect x="165" y="243" width="182" height="26" rx="7" fill="url(#barGrad)"/>
+  <!-- Bar shine -->
+  <rect x="165" y="243" width="182" height="9" rx="7" fill="white" opacity="0.14"/>
+
+  <!-- Knurling marks on bar (decorative) -->
+  <rect x="195" y="247" width="2" height="18" rx="1" fill="#7c3aed" opacity="0.5"/>
+  <rect x="202" y="247" width="2" height="18" rx="1" fill="#7c3aed" opacity="0.5"/>
+  <rect x="209" y="247" width="2" height="18" rx="1" fill="#7c3aed" opacity="0.5"/>
+  <rect x="216" y="247" width="2" height="18" rx="1" fill="#7c3aed" opacity="0.5"/>
+
+  <rect x="294" y="247" width="2" height="18" rx="1" fill="#7c3aed" opacity="0.5"/>
+  <rect x="301" y="247" width="2" height="18" rx="1" fill="#7c3aed" opacity="0.5"/>
+  <rect x="308" y="247" width="2" height="18" rx="1" fill="#7c3aed" opacity="0.5"/>
+  <rect x="315" y="247" width="2" height="18" rx="1" fill="#7c3aed" opacity="0.5"/>
+</svg>
