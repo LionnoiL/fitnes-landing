@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Unbounded:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px;overflow:hidden}
+  body{
+    font-family:'Manrope',system-ui,sans-serif;
+    background:
+      radial-gradient(600px 300px at 82% -8%, rgba(192,132,252,.28), transparent 70%),
+      radial-gradient(520px 320px at 8% 110%, rgba(124,58,237,.30), transparent 70%),
+      linear-gradient(150deg,#0d0a1a 0%,#0b0813 60%,#120b24 100%);
+    color:#ece7fb;
+    position:relative;
+    padding:72px 80px;
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .top{display:flex;align-items:center;gap:20px}
+  .top img{width:84px;height:84px;border-radius:22px;box-shadow:0 14px 40px rgba(124,58,237,.5)}
+  .brand{font-family:'Unbounded',sans-serif;font-weight:700;font-size:40px;letter-spacing:-.02em;line-height:1}
+  .brand small{display:block;font-family:'Manrope';font-weight:600;font-size:14px;letter-spacing:5px;color:#8073a3;margin-top:7px}
+  .badge{
+    display:inline-flex;align-items:center;gap:11px;align-self:flex-start;
+    font-size:21px;font-weight:700;color:#c084fc;
+    background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.32);
+    padding:11px 22px;border-radius:999px;margin-bottom:26px;
+  }
+  .badge .dot{width:11px;height:11px;border-radius:50%;background:#34d399;box-shadow:0 0 14px #34d399}
+  h1{
+    font-family:'Unbounded',sans-serif;font-weight:700;letter-spacing:-.025em;
+    font-size:68px;line-height:1.07;max-width:1000px;
+  }
+  .grad{
+    background:linear-gradient(100deg,#c084fc 0%,#e9d5ff 45%,#a855f7 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .sub{color:#a394c7;font-size:26px;font-weight:500;margin-top:24px;max-width:900px;line-height:1.4}
+  .foot{display:flex;align-items:center;gap:30px;flex-wrap:wrap}
+  .chip{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:20px;font-weight:600;color:#cdbdf0;
+    background:rgba(255,255,255,.035);border:1px solid rgba(168,85,247,.22);
+    padding:11px 20px;border-radius:14px;
+  }
+  .chip b{color:#fff;font-weight:700}
+  .url{margin-left:auto;font-family:'Unbounded';font-weight:600;font-size:24px;color:#c084fc}
+</style>
+</head>
+<body>
+  <div class="top">
+    <img src="logo.svg" alt="Fitnes" />
+    <div class="brand">Fitnes<small>СИСТЕМА ОБЛІКУ</small></div>
+  </div>
+
+  <div>
+    <span class="badge"><span class="dot"></span>10 днів безкоштовно · без картки</span>
+    <h1>Уся робота фітнес-центру — <span class="grad">в одній системі</span></h1>
+    <p class="sub">Клієнти та абонементи, контроль входу за ключами, продажі з фіскальним чеком, склад, зарплата і звіти.</p>
+  </div>
+
+  <div class="foot">
+    <span class="chip"><b>Вчасно.Каса</b> · фіскальні чеки</span>
+    <span class="chip"><b>Одна оплата</b> · без абонплати</span>
+    <span class="url">fitnes.in.ua</span>
+  </div>
+</body>
+</html>

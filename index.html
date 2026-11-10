@@ -5,7 +5,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Fitnes — система обліку для фітнес-центру</title>
 <meta name="description" content="Fitnes — українська система обліку для фітнес-центру: клієнти та абонементи, контроль входу за ключами, продажі з фіскалізацією через Вчасно.Каса, склад, зарплата і звіти." />
+<link rel="canonical" href="https://fitnes.in.ua/" />
+<meta name="theme-color" content="#0b0813" />
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+<!-- ===== Open Graph (прев'ю у Telegram, Facebook, Viber) ===== -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Fitnes" />
+<meta property="og:locale" content="uk_UA" />
+<meta property="og:url" content="https://fitnes.in.ua/" />
+<meta property="og:title" content="Fitnes — система обліку для фітнес-центру" />
+<meta property="og:description" content="Клієнти та абонементи, контроль входу за ключами, продажі з фіскальним чеком, склад, зарплата і звіти. 10 днів повна версія безкоштовно." />
+<meta property="og:image" content="https://fitnes.in.ua/assets/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Fitnes — уся робота фітнес-центру в одній системі" />
+
+<!-- ===== Twitter / X ===== -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Fitnes — система обліку для фітнес-центру" />
+<meta name="twitter:description" content="Клієнти, абонементи, контроль входу, фіскальні чеки, склад і звіти. 10 днів безкоштовно." />
+<meta name="twitter:image" content="https://fitnes.in.ua/assets/og-cover.png" />
+
+<!-- ===== Аналітика ===== -->
+<script>
+  window.FITNES_ANALYTICS = {
+    ga4:   'G-413LKNPP6W',
+    pixel: '41191768870422372'
+  };
+  (function(){
+    var C = window.FITNES_ANALYTICS, ready = function(v){ return v && v.indexOf('REPLACE') === -1; };
+    // --- Google Analytics 4 ---
+    if (ready(C.ga4)) {
+      var s = document.createElement('script');
+      s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + C.ga4;
+      document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ dataLayer.push(arguments); };
+      gtag('js', new Date());
+      gtag('config', C.ga4);
+    }
+    // --- Meta Pixel ---
+    if (ready(C.pixel)) {
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+        (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', C.pixel);
+      fbq('track', 'PageView');
+    }
+    // --- спільний хелпер подій ---
+    window.fitnesTrack = function(name, params){
+      params = params || {};
+      if (window.gtag) gtag('event', name, params);
+      if (window.fbq)  fbq('trackCustom', name, params);
+    };
+  })();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -208,6 +266,23 @@
   .start .s p{color:#cbb8ef;font-size:13.5px;margin:0}
   @media(max-width:620px){.start{grid-template-columns:1fr}}
 
+  /* ---------- FAQ ---------- */
+  .faq{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+  .faq details{background:linear-gradient(160deg,var(--panel),#100b22);border:1px solid var(--line);
+    border-radius:14px;padding:4px 22px;transition:border-color .25s}
+  .faq details[open]{border-color:var(--line-strong)}
+  .faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding:18px 0;font-weight:700;font-size:16.5px;color:var(--txt)}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary .pl{flex:none;width:22px;height:22px;position:relative;transition:transform .25s}
+  .faq summary .pl::before,.faq summary .pl::after{content:"";position:absolute;background:var(--violet-2);border-radius:2px}
+  .faq summary .pl::before{top:10px;left:3px;width:16px;height:2px}
+  .faq summary .pl::after{top:3px;left:10px;width:2px;height:16px;transition:opacity .25s}
+  .faq details[open] summary .pl{transform:rotate(90deg)}
+  .faq details[open] summary .pl::after{opacity:0}
+  .faq .ans{color:var(--muted);font-size:14.5px;line-height:1.6;padding:0 0 20px}
+  .faq .ans a{color:var(--violet-2);font-weight:600}
+
   /* ---------- footer ---------- */
   footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:40px 0;background:var(--bg-2)}
   .foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
@@ -262,6 +337,7 @@
       <a href="#fiscal">Фіскалізація</a>
       <a href="#audience">Для кого</a>
       <a href="#price">Ціна</a>
+      <a href="#faq">Питання</a>
     </nav>
     <a href="#download" class="btn btn-primary">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
@@ -520,6 +596,47 @@
   </div>
 </section>
 
+<!-- ===== FAQ ===== -->
+<section id="faq">
+  <div class="wrap">
+    <div class="shead reveal">
+      <div class="eyebrow">Питання</div>
+      <h2>Часті запитання</h2>
+      <p>Коротко про гроші, обладнання, дані та фіскалізацію.</p>
+    </div>
+    <div class="faq reveal">
+      <details>
+        <summary>Скільки коштує і чи є щомісячна плата?<span class="pl"></span></summary>
+        <div class="ans">Одна оплата — <b>₴6 900</b> (рання ціна) за безстрокову ліцензію на один заклад. Щомісячної абонплати за програму немає: заплатили раз — користуєтесь без обмежень за часом. Окремо оплачується лише ПРРО «Вчасно.Каса», і тільки якщо вмикаєте фіскалізацію.</div>
+      </details>
+      <details>
+        <summary>Чи обов'язковий РРО/ПРРО для фітнес-клубу?<span class="pl"></span></summary>
+        <div class="ans">Так, при розрахунках із клієнтами потрібен програмний РРО (ПРРО). У Fitnes фіскалізація інтегрована через «Вчасно.Каса»: касир лише обирає спосіб оплати, а система формує чек, враховує округлення готівки за НБУ та звіряється з Z-звітом. Фіскалізацію можна вмикати за потреби.</div>
+      </details>
+      <details>
+        <summary>Чи працює програма без інтернету?<span class="pl"></span></summary>
+        <div class="ans">Так. Сама програма встановлюється локально: один комп'ютер тримає базу й застосунок, решта робочих місць підключаються через браузер у локальній мережі. Інтернет потрібен лише для фіскальних чеків (ПРРО) та оновлень.</div>
+      </details>
+      <details>
+        <summary>Де зберігаються дані клієнтів?<span class="pl"></span></summary>
+        <div class="ans">Усі дані — на вашому сервері всередині клубу, не в чужій хмарі. Жодної залежності від стороннього SaaS: ви повністю контролюєте базу клієнтів, продажів і абонементів.</div>
+      </details>
+      <details>
+        <summary>Яке обладнання потрібне?<span class="pl"></span></summary>
+        <div class="ans">Мінімум — комп'ютер на ресепшені з Windows 10/11. Для продажу товарів зручний сканер штрихкодів, для оплат карткою — банківський термінал, підключений до девайс-менеджера «Вчасно.Каса». Усе це опційно й додається за потреби.</div>
+      </details>
+      <details>
+        <summary>Як активувати після 10 днів?<span class="pl"></span></summary>
+        <div class="ans">Завантажуєте й встановлюєте — повна версія вмикається автоматично на 10 днів без картки й реєстрації. Якщо сподобалось, пишете в <a href="https://t.me/andriihaponov" target="_blank" rel="noopener">Telegram</a> або на <a href="mailto:wmconstructor@gmail.com">e-mail</a>, отримуєте ліцензійний ключ і працюєте далі.</div>
+      </details>
+      <details>
+        <summary>Підійде для невеликої студії чи одного адміністратора?<span class="pl"></span></summary>
+        <div class="ans">Так — систему зроблено саме під одиночний фітнес-центр або студію. Нічого зайвого: тільки робочі місця ресепшену й адміністратора, без складного налаштування.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
 <!-- ===== DOWNLOAD / CTA ===== -->
 <section class="cta" id="download">
   <div class="wrap">
@@ -558,6 +675,7 @@
       <a href="#fiscal">Фіскалізація</a>
       <a href="#audience">Для кого</a>
       <a href="#price">Ціна</a>
+      <a href="#faq">Питання</a>
       <a href="#download">Завантажити</a>
       <a href="https://docs.fitnes.in.ua/" target="_blank" rel="noopener">Документація ↗</a>
       <a href="https://t.me/andriihaponov" target="_blank" rel="noopener">Telegram ↗</a>
@@ -576,6 +694,61 @@
     el.style.transitionDelay = (i%3)*70 + 'ms';
     io.observe(el);
   });
+
+  // --- трекінг конверсій ---
+  var track = window.fitnesTrack || function(){};
+  // клік «Завантажити» (пряме посилання на інсталятор)
+  document.querySelectorAll('a[href*="fitnes-setup.exe"]').forEach(function(a){
+    a.addEventListener('click', function(){
+      var sec = a.closest('section');
+      track('download_click', { location: (sec && sec.id) || 'page' });
+      if (window.fbq) fbq('track', 'Lead');
+    });
+  });
+  // клік по контактах (Telegram / e-mail) — намір купити
+  document.querySelectorAll('a[href^="mailto:"], a[href*="t.me/"]').forEach(function(a){
+    a.addEventListener('click', function(){
+      track('contact_click', { channel: a.href.indexOf('mailto:') === 0 ? 'email' : 'telegram' });
+      if (window.fbq) fbq('track', 'Contact');
+    });
+  });
+</script>
+
+<!-- ===== Структуровані дані для Google ===== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Fitnes",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Windows 10, Windows 11",
+      "url": "https://fitnes.in.ua/",
+      "image": "https://fitnes.in.ua/assets/og-cover.png",
+      "description": "Українська система обліку для фітнес-центру: клієнти та абонементи, контроль входу за ключами, продажі з фіскальним чеком через Вчасно.Каса, склад, зарплата і звіти.",
+      "softwareHelp": "https://docs.fitnes.in.ua/",
+      "offers": {
+        "@type": "Offer",
+        "price": "6900",
+        "priceCurrency": "UAH",
+        "description": "Безстрокова ліцензія на один заклад. 10 днів повна версія безкоштовно."
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type":"Question","name":"Скільки коштує і чи є щомісячна плата?","acceptedAnswer":{"@type":"Answer","text":"Одна оплата — ₴6 900 (рання ціна) за безстрокову ліцензію на один заклад. Щомісячної абонплати за програму немає. Окремо оплачується лише ПРРО «Вчасно.Каса», і тільки якщо вмикаєте фіскалізацію."}},
+        {"@type":"Question","name":"Чи обов'язковий РРО/ПРРО для фітнес-клубу?","acceptedAnswer":{"@type":"Answer","text":"Так, при розрахунках із клієнтами потрібен програмний РРО (ПРРО). У Fitnes фіскалізація інтегрована через «Вчасно.Каса»: система формує чек, враховує округлення готівки за НБУ та звіряється з Z-звітом."}},
+        {"@type":"Question","name":"Чи працює програма без інтернету?","acceptedAnswer":{"@type":"Answer","text":"Так. Програма встановлюється локально: один комп'ютер тримає базу й застосунок, решта місць підключаються через браузер у локальній мережі. Інтернет потрібен лише для фіскальних чеків та оновлень."}},
+        {"@type":"Question","name":"Де зберігаються дані клієнтів?","acceptedAnswer":{"@type":"Answer","text":"Усі дані — на вашому сервері всередині клубу, не в чужій хмарі. Жодної залежності від стороннього SaaS."}},
+        {"@type":"Question","name":"Яке обладнання потрібне?","acceptedAnswer":{"@type":"Answer","text":"Мінімум — комп'ютер на ресепшені з Windows 10/11. Опційно: сканер штрихкодів для товарів і банківський термінал для оплат карткою через девайс-менеджер «Вчасно.Каса»."}},
+        {"@type":"Question","name":"Як активувати після 10 днів?","acceptedAnswer":{"@type":"Answer","text":"Повна версія вмикається автоматично на 10 днів без картки й реєстрації. Далі отримуєте ліцензійний ключ у Telegram або на e-mail і працюєте без обмежень."}},
+        {"@type":"Question","name":"Підійде для невеликої студії чи одного адміністратора?","acceptedAnswer":{"@type":"Answer","text":"Так — систему зроблено саме під одиночний фітнес-центр або студію, без складного налаштування."}}
+      ]
+    }
+  ]
+}
 </script>
 </body>
 </html>
